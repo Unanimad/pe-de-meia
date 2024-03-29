@@ -21,7 +21,7 @@ DATABASES = {
     },
     # Sigaa Produção
     'sigaa': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'apps.base.db',
         'NAME': 'sigaa',
         'USER': '',
         'PASSWORD': '',
