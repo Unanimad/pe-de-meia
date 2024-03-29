@@ -101,7 +101,14 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+DATABASE_ROUTERS = ['pe_meia.dbrouters.DbRouter']
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 25
+}
+
 try:
     from .local_settings import *
-except Exception:
-    raise 'Crie o arquivo local_settings'
+except ImportError:
+    raise Exception("A local_settings.py file is required to run this project")
