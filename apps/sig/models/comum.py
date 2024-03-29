@@ -6,6 +6,8 @@ class SigPessoa(models.Model):
     nome = models.CharField(max_length=200)
     email = models.EmailField(max_length=200)
     cpf_cnpj = models.BigIntegerField()
+    data_nascimento = models.DateField()
+    nome_mae = models.CharField(max_length=200)
 
     class Meta:
         managed = False
