@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  db:
+    image: library/postgres:15
+    container_name: ifs_pe_meia_db
+    environment:
+      POSTGRES_DB: pe_meia
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./bd_data:/var/lib/postgresql
+
+
+volumes:
+  db_data:
