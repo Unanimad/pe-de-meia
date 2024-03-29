@@ -20,6 +20,7 @@ class SigDiscente(models.Model):
     status_discente = models.ForeignKey(SigStatusDiscente, on_delete=models.RESTRICT, db_column='status')
     ano_ingresso = models.PositiveSmallIntegerField(db_column='ano_ingresso')
     periodo_ingresso = models.PositiveSmallIntegerField(db_column='periodo_ingresso')
+    nivel = models.CharField(max_length=1)
     curso = models.ForeignKey('SigCurso', on_delete=models.RESTRICT, db_column='id_curso')
 
     class Meta:
