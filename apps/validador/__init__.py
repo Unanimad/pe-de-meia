@@ -11,7 +11,6 @@ class PeMeiaEstudante:
     """
     cols = {
         'ESTUDANTE_CPF',
-        'ESTUDANTE_NU_NIS',
         'ESTUDANTE_NOME',
         'ESTUDANTE_DT_NASCIMENTO',
         'ESTUDANTE_MAE_NOME',
