@@ -9,6 +9,27 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+DATABASES = {
+    # Banco da aplicação
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'pe_meia',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'localhost',
+        'PORT': 5432,
+    },
+    # Sigaa Produção
+    'sigaa': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'sigaa',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',
+        'PORT': 0,
+    },
+}
+
 sentry_sdk.init(
     dsn="https://5f6e257fbec8eaa904b043345ffd5501@o4505993221832704.ingest.us.sentry.io/4506991271804928",
     # Set traces_sample_rate to 1.0 to capture 100%
