@@ -144,7 +144,8 @@ class SigSituacaoMatricula(models.Model):
 
 
 class SigDiscenteTurma(models.Model):
-    id = models.PositiveBigIntegerField(primary_key=True, db_column='id_discente_turma')
+    id = models.PositiveBigIntegerField(primary_key=True, db_column='id_matricula_componente')
+    ano = models.PositiveSmallIntegerField()
     turma = models.ForeignKey(SigTurma, on_delete=models.RESTRICT, db_column='id_turma')
     discente = models.ForeignKey(SigDiscente, on_delete=models.RESTRICT, db_column='id_discente')
     situacao_matricula = models.ForeignKey(SigSituacaoMatricula, on_delete=models.RESTRICT,
