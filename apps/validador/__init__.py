@@ -47,6 +47,7 @@ class PeMeiaEstudante:
 
     def validador_dt_nascimento(self):
         dts_nascimento = self.df['ESTUDANTE_DT_NASCIMENTO']
+        # TODO > 14 anos
 
     def validador_mae_nome(self):
         maes_nomes = self.df['ESTUDANTE_MAE_NOME'].apply(lambda row: row.strip()[:150])
