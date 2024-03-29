@@ -21,7 +21,7 @@ class Entidade(models.Model):
     nome = models.TextField('Nome')
 
     # TODO: necessário codigo municipio
-    campus = models.ForeignKey(SigCampus, models.PROTECT)
+    campus = models.PositiveBigIntegerField(unique=True)  # id_unidade de SigCampus
 
 
 class TipoCodigo(models.Model):

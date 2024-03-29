@@ -26,7 +26,6 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('codigo', models.CharField(max_length=9, verbose_name='Código')),
                 ('nome', models.TextField(verbose_name='Nome')),
-                ('campus', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='sig.sigcampus')),
             ],
         ),
         migrations.CreateModel(
