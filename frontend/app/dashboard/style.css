@@ -1,0 +1,27 @@
+h1 {
+    font-weight: 500;
+    font-size: 2rem;
+}
+
+h2 {
+    font-weight: 300;
+    font-size: 1.75rem;
+}
+
+h3 {
+    font-weight: 300;
+    font-size: 1.5rem
+}
+
+.info div {
+    padding: 15px 0;
+    font-weight: 300;
+}
+
+.info span {
+    font-weight: 500;
+    color: hsla(var(--ds-gray), 1);
+}
+
+
+
