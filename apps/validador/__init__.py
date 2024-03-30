@@ -22,7 +22,11 @@ class PeMeia(ABC):
         valida_methods = [func.replace('valida_', '') for func in dir(self) if callable(getattr(self, func))
                           if func.startswith('valida')]
 
-        return {method: getattr(self, f'valida_{method}')() for method in valida_methods}
+        return {method: {
+            'total': getattr(self, f'valida_{method}')(),
+            'label': getattr(self, f'valida_{method}').__doc__.strip()
+        }
+            for method in valida_methods}
 
     def gera_csv(self):
         ...
@@ -44,14 +48,23 @@ class PeMeiaEstudante(PeMeia):
     }
 
     def valida_cpfs_nulos(self):
+        """
+        CPFs nulos
+        """
         qs = self.qs.filter(cpf__isnull=True)
         return self._ha_registros(qs)
 
     def valida_nomes_maes_nulos(self):
+        """
+        Sem nome de mãe
+        """
         qs = self.qs.filter(nome_mae__isnull=True)
         return self._ha_registros(qs)
 
     def valida_menores_anos(self, idade: int = 14):
+        """
+        Com menos de 14 anos
+        """
         qs = self.qs.filter(idade__lt=idade)
         return self._ha_registros(qs)
 

@@ -54,8 +54,8 @@ export default async function Page({searchParams}) {
         <div className={'divide-y rounded-lg shadow info'}>
           {data['info'] && Object.entries(data['info']).map(([key, value], i) => (
             <div key={i}>
-              <span>{key}</span>
-              <h3 className={value === 0 ? 'text-emerald-500' : 'text-orange-500'}>{value}</h3>
+              <span>{value?.label}</span>
+              <h3 className={value?.total === 0 ? 'text-emerald-500' : 'text-orange-500'}>{value?.total}</h3>
             </div>
           ))}
         </div>
