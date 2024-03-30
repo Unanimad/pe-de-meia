@@ -36,3 +36,7 @@ section {
   font-size: 0.75rem;
   color: hsla(var(--ds-gray), 1);
 }
+
+.icon-download {
+  font-size: 12px;
+}
