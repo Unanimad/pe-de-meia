@@ -1,5 +1,6 @@
+from django.utils import timezone
 from django.db import models
-from django.db.models import F, Count, When, Value, IntegerField, Case, OuterRef, Subquery
+from django.db.models import F, Count, When, Value, IntegerField, Case, OuterRef, Subquery, Func, CharField
 
 from apps.sig.models.ensino import SigDiscente, SigDiscenteTurma
 from apps.sig.models.tecnico import SigCursoTecnico  # se remover essa linha para de funcionar!
@@ -41,16 +42,22 @@ class SigDiscenteQuerySet(models.QuerySet):
         ).annotate(
             cpf=F('pessoa__cpf_cnpj'),
             nome=F('pessoa__nome'),
-            data_nascimento=F('pessoa__data_nascimento'),
+            data_nascimento=Func(F('pessoa__data_nascimento'), Value('DD/MM/YYYY'), function='to_char',
+                                 output_field=CharField()),
             nome_mae=F('pessoa__nome_mae'),
             contador_ano=(subquery_situacao_2 + subquery_situacao_4)
         ).annotate(
+            idade=Func(
+                Value('year'), Func(
+                    Value(timezone.now().date()), F('pessoa__data_nascimento'), function='age'
+                ), function='date_part', output_field=IntegerField()
+            ),
             etapa_ensino=etapa_ensino
         ).filter(
             nivel__in=['T', 'M'],
             status_discente_id=1
         ).order_by('curso__campus__nome', 'pessoa__nome').values(
-            'cpf', 'nome', 'data_nascimento', 'nome_mae', 'etapa_ensino',
+            'cpf', 'nome', 'data_nascimento', 'nome_mae', 'etapa_ensino', 'idade'
         )
 
         return queryset
