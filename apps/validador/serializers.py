@@ -11,9 +11,9 @@ class ValidadorSerializer(serializers.ModelSerializer):
 
 class EstudanteSerializer(serializers.Serializer):
     # 'cpf', 'nome', 'data_nascimento', 'nome_mae', 'etapa_ensino',
-    cpf = serializers.CharField(max_length=11)
+    cpf = serializers.IntegerField()
     nome = serializers.CharField()
-    data_nascimento = serializers.DateField()
+    data_nascimento = serializers.CharField()
     nome_mae = serializers.CharField()
     etapa_ensino = serializers.IntegerField()
     # matricula_dois_meses_inicio = serializers.BooleanField()
