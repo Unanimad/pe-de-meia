@@ -9,6 +9,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CORS_ALLOWED_ORIGINS = []
+
 DATABASES = {
     # Banco da aplicação
     'default': {
