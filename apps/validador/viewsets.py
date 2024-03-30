@@ -38,9 +38,9 @@ class EstudanteViewSet(viewsets.ViewSet):
             'count': paginator.count,
             'next': paginator.get_next_link(),
             'previous': paginator.get_previous_link(),
-            **validacao,
             'entidades': self.ENTIDADES,
             'results': serializer.data,
+            'info': {**validacao}
         }
 
         return Response(data, status=status.HTTP_200_OK)
