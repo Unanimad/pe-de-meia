@@ -23,6 +23,8 @@ class EstudanteViewSet(viewsets.ViewSet):
             query_params.pop('limit')
         if query_params.get('offset'):
             query_params.pop('offset')
+        if query_params.get('format'):
+            query_params.pop('format')
 
         qs = SigDiscenteQuerySet().pe_meia()
         qs = qs.filter(**query_params)
