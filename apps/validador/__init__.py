@@ -24,7 +24,8 @@ class PeMeia(ABC):
 
         return {method: {
             'total': getattr(self, f'valida_{method}')(),
-            'label': getattr(self, f'valida_{method}').__doc__.strip()
+            'label': getattr(self, f'valida_{method}').__doc__.split(':')[0].strip(),
+            'qs': getattr(self, f'valida_{method}').__doc__.split(':')[1].strip()
         }
             for method in valida_methods}
 
@@ -49,21 +50,21 @@ class PeMeiaEstudante(PeMeia):
 
     def valida_cpfs_nulos(self):
         """
-        CPFs nulos
+        CPFs nulos: cpf__isnull=True
         """
         qs = self.qs.filter(cpf__isnull=True)
         return self._ha_registros(qs)
 
     def valida_nomes_maes_nulos(self):
         """
-        Sem nome de mãe
+        Sem nome de mãe: nome_mae__isnull=True
         """
         qs = self.qs.filter(nome_mae__isnull=True)
         return self._ha_registros(qs)
 
     def valida_menores_anos(self, idade: int = 14):
         """
-        Com menos de 14 anos
+        Com menos de 14 anos: idade__lt=14
         """
         qs = self.qs.filter(idade__lt=idade)
         return self._ha_registros(qs)

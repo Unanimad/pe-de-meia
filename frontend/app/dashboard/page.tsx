@@ -8,6 +8,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import Info from "@/components/dashboard/info"
 import Link from 'next/link'
 
 async function getData(searchParams) {
@@ -45,16 +46,8 @@ export default async function Page({searchParams}) {
           <h3 className={'text-blue-500'}>{data['count']}</h3>
         </div>
 
-        <div className={'divide-y rounded-lg shadow info'}>
-          {data['info'] && Object.entries(data['info']).map(([key, value], i) => (
+        <Info data={data}/>
 
-
-            <div key={i}>
-              <span>{value?.label}</span>
-              <h3 className={value?.total === 0 ? 'text-emerald-500' : 'text-orange-500'}>{value?.total}</h3>
-            </div>
-          ))}
-        </div>
       </div>
       <div className={'grow'}>
         <div className={'mb-5'}>
