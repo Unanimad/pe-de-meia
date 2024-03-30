@@ -20,5 +20,11 @@ class EstudanteViewSet(viewsets.ViewSet):
         paginated_queryset = paginator.paginate_queryset(qs, request)
 
         serializer = self.serializer_class(paginated_queryset, many=True)
-        data = {'validacoes': validacao, 'estudantes': serializer.data}
+        data = {
+            'count': paginator.count,
+            'next': paginator.get_next_link(),
+            'previous': paginator.get_previous_link(),
+            'results': serializer.data,
+            **validacao
+        }
         return Response(data, status=status.HTTP_200_OK)
