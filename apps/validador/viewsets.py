@@ -14,7 +14,7 @@ class EstudanteViewSet(viewsets.ViewSet):
 
     def list(self, request):
         qs = SigDiscenteQuerySet().pemeia()
-        validacao = PeMeiaEstudante(qs).valida()
+        validacao = PeMeiaEstudante(qs).valide()
 
         paginator = self.pagination_class()
         paginated_queryset = paginator.paginate_queryset(qs, request)

@@ -25,76 +25,30 @@ class PeMeiaEstudante:
     def __init__(self, qs: QuerySet):
         self.qs = qs
 
-    def __executa_qs(self, qs: QuerySet):
+    @classmethod
+    def __ha_registros(cls, qs: QuerySet):
         total = qs.count()
         if total > 0:
             return total
         return 0
 
-    def valida(self) -> Dict:
-        data = {
-            'cpfs_nulos': self.cpfs_nulos,
-            'nomes_maes_nules': self.nomes_maes_nulos,
-            'menores_anos': self.menores_anos
-        }
-        return data
+    def valide(self) -> Dict:
+        valida_methods = [func.replace('valida_', '') for func in dir(self) if callable(getattr(self, func))
+                          if func.startswith('valida')]
 
-    @property
-    def cpfs_nulos(self):
+        return {method: getattr(self, f'valida_{method}')() for method in valida_methods}
+
+    def valida_cpfs_nulos(self):
         qs = self.qs.filter(cpf__isnull=True)
-        return self.__executa_qs(qs)
+        return self.__ha_registros(qs)
 
-    @property
-    def nomes_maes_nulos(self):
+    def valida_nomes_maes_nulos(self):
         qs = self.qs.filter(nome_mae__isnull=True)
-        return self.__executa_qs(qs)
+        return self.__ha_registros(qs)
 
-    @property
-    def menores_anos(self, idade: int = 14):
+    def valida_menores_anos(self, idade: int = 14):
         qs = self.qs.filter(idade__lt=idade)
-        return self.__executa_qs(qs)
-
-    @classmethod
-    def apenas_numeros(cls, texto: str) -> str:
-        """
-        remove caracteres alpha
-        :param texto: ESTUDANTE_NU_RG, ESTUDANTE_CPF...
-        :return: somente numeros
-        """
-        return ''.join([c for c in texto if c.isdigit()])
-
-    def validador_cpf(self):
-        # TODO: Precisa retornar quantos estão invalidos e quais são (se houver)
-        cpfs = self.df['ESTUDANTE_CPF'].apply(self.apenas_numeros)
-
-    def validador_nis(self):
-        # TODO: Obrigatório caso não tenha CPF
-        ...
-
-    def validador_estudante_nome(self):
-        # TODO: há nomes vazios ou incompletos?
-        nomes = self.df['ESTUDANTE_NOME'].apply(lambda row: row.strip()[:150])
-
-    def validador_dt_nascimento(self):
-        dts_nascimento = self.df['ESTUDANTE_DT_NASCIMENTO']
-        # TODO > 14 anos
-
-    def validador_mae_nome(self):
-        maes_nomes = self.df['ESTUDANTE_MAE_NOME'].apply(lambda row: row.strip()[:150])
-
-    def validador_entidade(self):
-        # TODO: precisa pegar do modelo base as informacoes do codigo e nome
-        ...
-
-    def validador_codigo_ensino(self):
-        # de onde tem os códigos?
-        ...
-
-    def validador_etapa_ensino(self):
-        ...
-
-    def validador_matricula_dois_meses_inicio(self):
-        ...
+        return self.__ha_registros(qs)
 
 
 class PeMeiaFrequencia:
