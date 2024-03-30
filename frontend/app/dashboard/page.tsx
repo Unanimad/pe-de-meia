@@ -25,12 +25,6 @@ async function getData(searchParams) {
 
 export default async function Page({searchParams}) {
 
-  // const entidade = searchParams['curso__campus_id'] ?? ""
-
-  function filtraValidacao() {
-    console.log('function')
-  }
-
   const data = await getData(searchParams);
 
   return <>
@@ -48,11 +42,13 @@ export default async function Page({searchParams}) {
 
         <div className={'p-4 mb-5 rounded-lg shadow info'}>
           <span>Discentes</span>
-          <h3>{data['count']}</h3>
+          <h3 className={'text-blue-500'}>{data['count']}</h3>
         </div>
 
         <div className={'divide-y rounded-lg shadow info'}>
           {data['info'] && Object.entries(data['info']).map(([key, value], i) => (
+
+
             <div key={i}>
               <span>{value?.label}</span>
               <h3 className={value?.total === 0 ? 'text-emerald-500' : 'text-orange-500'}>{value?.total}</h3>
@@ -85,5 +81,6 @@ export default async function Page({searchParams}) {
         <DataTable columns={columns} data={data['results']}/>
       </div>
     </section>
+
   </>
 }

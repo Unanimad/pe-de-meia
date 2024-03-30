@@ -17,11 +17,17 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import {useRouter, useSearchParams} from "next/navigation";
 
 
 export function EntidadesSelect({entidades}) {
+
+  const router = useRouter()
+  const searchParams = useSearchParams()
+
   const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("")
+  const [value, setValue] = React.useState(searchParams['curso__campus_id'] || "")
+
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -50,7 +56,7 @@ export function EntidadesSelect({entidades}) {
                 onSelect={(currentValue) => {
                   setValue(currentValue)
                   setOpen(false)
-                  console.log(`curso__campus_id=${entidade.campus}`)
+                  router.push(`/dashboard/?curso__campus_id=${entidade.campus}`)
                 }}
               >
                 <Check
