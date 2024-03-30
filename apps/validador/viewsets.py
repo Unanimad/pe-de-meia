@@ -14,9 +14,11 @@ class EstudanteViewSet(viewsets.ViewSet):
 
     def list(self, request):
         qs = SigDiscenteQuerySet().pemeia()
+        validacao = PeMeiaEstudante(qs).valida()
 
         paginator = self.pagination_class()
         paginated_queryset = paginator.paginate_queryset(qs, request)
 
         serializer = self.serializer_class(paginated_queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        data = {'validacoes': validacao, 'estudantes': serializer.data}
+        return Response(data, status=status.HTTP_200_OK)
