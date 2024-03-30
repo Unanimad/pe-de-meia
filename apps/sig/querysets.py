@@ -8,7 +8,7 @@ from apps.sig.models.tecnico import SigCursoTecnico  # se remover essa linha par
 
 class SigDiscenteQuerySet(models.QuerySet):
 
-    def pemeia(self) -> models.QuerySet:
+    def pe_meia(self) -> models.QuerySet:
         count_ano = Count('ano', distinct=True)
         subquery_situacao_2 = Subquery(
             SigDiscenteTurma.objects.filter(
