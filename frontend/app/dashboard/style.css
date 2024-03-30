@@ -13,6 +13,10 @@ h3 {
   font-size: 1.5rem
 }
 
+section {
+  margin-top: 10px
+}
+
 .info {
   background: #ffffff;
 }
@@ -28,5 +32,6 @@ h3 {
 
 .info span {
   font-weight: 500;
+  font-size: 0.75rem;
   color: hsla(var(--ds-gray), 1);
 }
