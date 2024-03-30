@@ -23,6 +23,9 @@ class Entidade(models.Model):
     # TODO: necessário codigo municipio
     campus = models.PositiveBigIntegerField(unique=True)  # id_unidade de SigCampus
 
+    def __str__(self):
+        return self.nome
+
 
 class TipoCodigo(models.Model):
     """
