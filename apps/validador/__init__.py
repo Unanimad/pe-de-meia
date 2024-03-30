@@ -1,4 +1,6 @@
-import pandas as pd
+from typing import Dict
+
+from django.db.models import QuerySet
 
 """
 Portaria: https://www.in.gov.br/web/dou/-/portaria-n-84-de-7-de-fevereiro-de-2024-542258771
@@ -20,8 +22,37 @@ class PeMeiaEstudante:
         'MATRICULA_ATE_DOIS_MESES_DO_INICIO'
     }
 
-    def __init__(self, df: pd.DataFrame):
-        self.df = df
+    def __init__(self, qs: QuerySet):
+        self.qs = qs
+
+    def __executa_qs(self, qs: QuerySet):
+        total = qs.count()
+        if total > 0:
+            return total
+        return 0
+
+    def valida(self) -> Dict:
+        data = {
+            'cpfs_nulos': self.cpfs_nulos,
+            'nomes_maes_nules': self.nomes_maes_nulos,
+            'menores_anos': self.menores_anos
+        }
+        return data
+
+    @property
+    def cpfs_nulos(self):
+        qs = self.qs.filter(cpf__isnull=True)
+        return self.__executa_qs(qs)
+
+    @property
+    def nomes_maes_nulos(self):
+        qs = self.qs.filter(nome_mae__isnull=True)
+        return self.__executa_qs(qs)
+
+    @property
+    def menores_anos(self, idade: int = 14):
+        qs = self.qs.filter(idade__lt=idade)
+        return self.__executa_qs(qs)
 
     @classmethod
     def apenas_numeros(cls, texto: str) -> str:
