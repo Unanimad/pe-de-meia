@@ -13,7 +13,7 @@ class EstudanteViewSet(viewsets.ViewSet):
     serializer_class = EstudanteSerializer
     pagination_class = LimitOffsetPagination
 
-    ENTIDADES = EntidadeSerializer(EntidadeSerializer.Meta.model.objects.all(), many=True)
+    ENTIDADES = EntidadeSerializer(EntidadeSerializer.Meta.model.objects.all(), many=True).data
 
     def list(self, request, *args, **kwargs):
         paginator = self.pagination_class()
@@ -36,9 +36,9 @@ class EstudanteViewSet(viewsets.ViewSet):
             'count': paginator.count,
             'next': paginator.get_next_link(),
             'previous': paginator.get_previous_link(),
-            'entidades': self.ENTIDADES.data,
+            **validacao,
+            'entidades': self.ENTIDADES,
             'results': serializer.data,
-            **validacao
         }
 
         return Response(data, status=status.HTTP_200_OK)

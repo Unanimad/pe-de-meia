@@ -27,10 +27,7 @@ class PeMeiaEstudante:
 
     @classmethod
     def __ha_registros(cls, qs: QuerySet):
-        total = qs.count()
-        if total > 0:
-            return total
-        return 0
+        return qs.count()
 
     def valide(self) -> Dict:
         valida_methods = [func.replace('valida_', '') for func in dir(self) if callable(getattr(self, func))
