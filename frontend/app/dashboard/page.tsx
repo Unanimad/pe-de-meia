@@ -9,18 +9,49 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import Info from "@/components/dashboard/info"
-import Link from 'next/link'
+import {Toaster} from "@/components/ui/toaster"
+import {useToast} from "@/components/ui/use-toast"
+import {Button} from "@/components/ui/button";
+
+const api_url = 'http://localhost:8000/api'
 
 async function getData(searchParams) {
-  let url = 'http://localhost:8000/api/estudantes/?' + new URLSearchParams(searchParams)
+  let url = api_url + '/estudantes/?' + new URLSearchParams(searchParams)
 
-  console.log(url)
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 3000);
+  const {toast} = useToast()
 
-  const res = await fetch(url)
-  if (!res.ok) {
-    throw new Error('Failed to fetch data')
+  try {
+    const response = await fetch(url, {
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId); // Cancela o timeout se a requisição for bem-sucedida
+    return await response.json();
+  } catch (error) {
+
+    clearTimeout(timeoutId); // Cancela o timeout se ocorrer um erro
+    toast({
+      description: "Não foi possível contactar o servidor. Aguarde alguns instantes.",
+    })
   }
-  return res.json()
+}
+
+function downloadCSV() {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 3000);
+  const url = api_url + '/estudantes/download_csv/'
+
+  try {
+    const response = fetch(url, {
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId); // Cancela o timeout se a requisição for bem-sucedida
+    return response;
+  } catch (error) {
+    clearTimeout(timeoutId); // Cancela o timeout se ocorrer um erro
+    throw error;
+  }
 }
 
 
@@ -46,7 +77,7 @@ export default async function Page({searchParams}) {
           <h3 className={'text-blue-500'}>{data['count']}</h3>
         </div>
 
-        <Info data={data}/>
+        {(data["info"] !== undefined && data["info"] !== null) && <Info data={data["info"]}/>}
 
       </div>
       <div className={'grow'}>
@@ -60,8 +91,8 @@ export default async function Page({searchParams}) {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger>
-                       <Link href="http://localhost:8000/api/estudantes/download_csv/"> <CloudDownloadIcon
-                         size={22}/></Link></TooltipTrigger>
+                      <Button onClick={downloadCSV}><CloudDownloadIcon
+                        size={22}/></Button></TooltipTrigger>
                     <TooltipContent>
                       <p>Fazer download da planilha.</p>
                     </TooltipContent>
@@ -75,5 +106,6 @@ export default async function Page({searchParams}) {
       </div>
     </section>
 
+    <Toaster/>
   </>
 }

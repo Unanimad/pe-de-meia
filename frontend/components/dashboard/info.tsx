@@ -16,7 +16,7 @@ const Info = ({data}) => {
 
   return (
     <div className={'divide-y rounded-lg shadow info'}>
-      {data['info'] && Object.entries(data['info']).map(([key, value], i) => (
+      {(data !== undefined && data !== null) && Object.entries(data).map(([key, value], i) => (
         <div key={i} onClick={() => filtraValidade(value?.qs?.split('=')[0], value?.qs?.split('=')[1])}>
           <span>{value?.label}</span>
           <h3 className={value?.total === 0 ? 'text-emerald-500' : 'text-orange-500'}>{value?.total}</h3>
