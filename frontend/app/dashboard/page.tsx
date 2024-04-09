@@ -1,17 +1,10 @@
 import {EntidadesSelect} from "@/components/ui/combobox";
 import {DataTable} from "@/app/dashboard/data-table";
 import {columns} from "./columns"
-import {CloudDownloadIcon} from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
+
 import Info from "@/components/dashboard/info"
-import {Toaster} from "@/components/ui/toaster"
-import {useToast} from "@/components/ui/use-toast"
-import {Button} from "@/components/ui/button";
+import Download from "@/components/dashboard/download";
+// import {Toaster} from "@/components/ui/toaster"
 
 const api_url = 'http://localhost:8000/api'
 
@@ -20,7 +13,7 @@ async function getData(searchParams) {
 
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 3000);
-  const {toast} = useToast()
+  // const toast = useToast
 
   try {
     const response = await fetch(url, {
@@ -31,26 +24,9 @@ async function getData(searchParams) {
   } catch (error) {
 
     clearTimeout(timeoutId); // Cancela o timeout se ocorrer um erro
-    toast({
-      description: "Não foi possível contactar o servidor. Aguarde alguns instantes.",
-    })
-  }
-}
-
-function downloadCSV() {
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 3000);
-  const url = api_url + '/estudantes/download_csv/'
-
-  try {
-    const response = fetch(url, {
-      signal: controller.signal
-    });
-    clearTimeout(timeoutId); // Cancela o timeout se a requisição for bem-sucedida
-    return response;
-  } catch (error) {
-    clearTimeout(timeoutId); // Cancela o timeout se ocorrer um erro
-    throw error;
+    // toast({
+    //   description: "Não foi possível contactar o servidor. Aguarde alguns instantes.",
+    // })
   }
 }
 
@@ -86,26 +62,12 @@ export default async function Page({searchParams}) {
             <div>
               <h2>Discentes</h2>
             </div>
-            <div className={'text-right'}>
-              <span>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <Button onClick={downloadCSV}><CloudDownloadIcon
-                        size={22}/></Button></TooltipTrigger>
-                    <TooltipContent>
-                      <p>Fazer download da planilha.</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </span>
-            </div>
+            <Download/>
           </div>
         </div>
         <DataTable columns={columns} data={data['results']}/>
       </div>
     </section>
 
-    <Toaster/>
   </>
 }
