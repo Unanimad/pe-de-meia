@@ -69,6 +69,14 @@ class PeMeiaEstudante(PeMeia):
         qs = self.qs.filter(idade__lt=idade)
         return self._ha_registros(qs)
 
+    def valida_maiores_anos(self, idade: int = 24):
+        """
+        Maior de 24 anos até 31/03: idade__gte=24, data_nascimento__lte='2000-31-03'
+        """
+        data_nascimento_limite = '2000-31-03'
+        qs = self.qs.filter(idade__gte=idade, data_nascimento__lte=data_nascimento_limite)
+        return self._ha_registros(qs)
+
     @classmethod
     def parse(cls, estudante: Dict, type_='csv') -> Dict:
         return {
