@@ -1,6 +1,11 @@
 from django.db import models
 
 
+class CodigoMensagem(models.Model):
+    codigo = models.CharField(max_length=3, primary_key=True, unique=True)
+    mensagem = models.TextField()
+
+
 class Incentivo(models.Model):
     nome = models.CharField(max_length=100)
     descricao = models.TextField()
@@ -37,6 +42,7 @@ class InconsistenciaCiclo(models.Model):
     descricao = models.TextField()
 
     ciclo = models.ForeignKey(Ciclo, on_delete=models.PROTECT)
+
 
     class Meta:
         unique_together = (('cpf', 'etapa', 'ciclo'),)

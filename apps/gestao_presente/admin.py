@@ -1,6 +1,11 @@
 from django.contrib import admin
 
-from .models import Incentivo, TipoCiclo, Ciclo, InconsistenciaCiclo
+from .models import CodigoMensagem, Incentivo, TipoCiclo, Ciclo, InconsistenciaCiclo
+
+
+@admin.register(CodigoMensagem)
+class CodigoMensagemAdmin(admin.ModelAdmin):
+    ...
 
 
 @admin.register(Incentivo)
