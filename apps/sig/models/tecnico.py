@@ -53,6 +53,7 @@ class SigCursoTecnico(models.Model):
     codigo_inep = models.PositiveIntegerField()
     regime_academico = models.PositiveIntegerField(db_column='id_regime_academico')
     curso = models.OneToOneField(SigCurso, models.PROTECT, db_column='id_curso', primary_key=True)
+    modalidade = models.ForeignKey(SigModalidade, models.PROTECT, db_column='id_modalidade_curso_tecnico')
 
     class Meta:
         managed = False
