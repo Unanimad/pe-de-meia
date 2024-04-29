@@ -39,7 +39,7 @@ export default async function Page({searchParams}) {
     <h1>Pé-de-meia</h1>
 
     <section>
-      <EntidadesSelect entidades={data['entidades']}/>
+      {(data['entidades'] !== undefined && data['entidades'] !== null) && <EntidadesSelect entidades={data['entidades']}/>}
     </section>
 
     <section className={'flex flex-row space-x-20 mt-10'}>
