@@ -9,9 +9,10 @@ const Info = ({data}) => {
   const urlSearchParams = new URLSearchParams(searchParams.toString())
 
   function filtraValidade(key, value) {
-    const params = urlSearchParams
+    let params = urlSearchParams
     params.set(key, value)
-    router.replace(`/dashboard?${params.toString()}`)
+    let final_params = params.toString().replace('%26', '&')
+    router.replace(`/dashboard/?${final_params}`)
   }
 
   return (
