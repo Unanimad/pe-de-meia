@@ -1,6 +1,6 @@
 from django.utils import timezone
 from django.db import models
-from django.db.models import F, Count, When, Value, IntegerField, Case, OuterRef, Subquery, Func, CharField
+from django.db.models import F, Count, When, Value, IntegerField, Case, OuterRef, Subquery, Func, CharField, Exists
 
 from apps.sig.models.ensino import SigDiscente, SigDiscenteTurma
 from apps.sig.models.tecnico import SigCursoTecnico  # se remover essa linha para de funcionar!
@@ -35,7 +35,14 @@ class SigDiscenteQuerySet(models.QuerySet):
             default=Value(34), output_field=IntegerField(),
         )
 
-        queryset = SigDiscente.objects.select_related(
+        exists_matricula_componente = Exists(
+            SigDiscenteTurma.objects.filter(
+                discente_id=OuterRef('id'), situacao_matricula_id=2,
+                turma__data_fim__isnull=False, turma__data_fim__gte=timezone.now() - timezone.timedelta(days=4 * 30)
+            )
+        )
+
+        qs = (SigDiscente.objects.select_related(
             'pessoa', 'curso', 'curso__campus'
         ).prefetch_related(
             'sigdiscenteturma_set'
@@ -52,12 +59,16 @@ class SigDiscenteQuerySet(models.QuerySet):
                     Value(timezone.now().date()), F('pessoa__data_nascimento'), function='age'
                 ), function='date_part', output_field=IntegerField()
             ),
-            etapa_ensino=etapa_ensino
+            etapa_ensino=etapa_ensino,
+            exists_matricula_componente=exists_matricula_componente
         ).filter(
             nivel__in=['T', 'M'],
-            status_discente_id=1
+            status_discente_id=1,
+            exists_matricula_componente=True
+        ).exclude(
+            curso__sigcursotecnico__modalidade_id__in=[-1, 3]
         ).order_by('curso__campus__nome', 'pessoa__nome').values(
             'cpf', 'nome', 'data_nascimento', 'nome_mae', 'etapa_ensino', 'idade'
-        )
+        ))
 
-        return queryset
+        return qs
