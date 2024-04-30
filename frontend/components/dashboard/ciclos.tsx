@@ -21,6 +21,7 @@ const Ciclo = ({data}) => {
       selected={ranges}
       locale={ptBR}
       className="rounded-md border"
+      disabled={new Date()}
     />
 
   </div>)
