@@ -1,45 +1,23 @@
 import {EntidadesSelect} from "@/components/ui/combobox";
 import {DataTable} from "@/app/dashboard/data-table";
 import {columns} from "./columns"
+import {api_url, getData} from "@/app/service"
 
 import Info from "@/components/dashboard/info"
 import Download from "@/components/dashboard/download";
-// import {Toaster} from "@/components/ui/toaster"
-
-const api_url = 'http://localhost:8000/api'
-
-async function getData(searchParams) {
-  let url = api_url + '/estudantes/?' + new URLSearchParams(searchParams)
-
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 3000);
-  // const toast = useToast
-
-  try {
-    const response = await fetch(url, {
-      signal: controller.signal
-    });
-    clearTimeout(timeoutId); // Cancela o timeout se a requisição for bem-sucedida
-    return await response.json();
-  } catch (error) {
-
-    clearTimeout(timeoutId); // Cancela o timeout se ocorrer um erro
-    // toast({
-    //   description: "Não foi possível contactar o servidor. Aguarde alguns instantes.",
-    // })
-  }
-}
+import Ciclo from "@/components/dashboard/ciclos"
 
 
 export default async function Page({searchParams}) {
 
-  const data = await getData(searchParams);
+  const data = await getData(`${api_url}/estudantes/?`, searchParams);
 
   return <>
     <h1>Pé-de-meia</h1>
 
     <section>
-      {(data['entidades'] !== undefined && data['entidades'] !== null) && <EntidadesSelect entidades={data['entidades']}/>}
+      {(data['entidades'] !== undefined && data['entidades'] !== null) &&
+          <EntidadesSelect entidades={data['entidades']}/>}
     </section>
 
     <section className={'flex flex-row space-x-20 mt-10'}>
@@ -59,12 +37,11 @@ export default async function Page({searchParams}) {
       <div className={'grow'}>
         <div className={'mb-5'}>
           <div className={'grid grid-cols-2'}>
-            <div>
-              <h2>Discentes</h2>
-            </div>
+            <h2>Discentes</h2>
             <Download/>
           </div>
         </div>
+
         <DataTable columns={columns} data={data['results']}/>
       </div>
     </section>

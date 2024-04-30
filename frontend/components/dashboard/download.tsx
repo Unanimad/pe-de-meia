@@ -8,7 +8,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 
-const api_url = 'http://localhost:8000/api'
+import {api_url} from "@/app/service"
 
 const Download = () => {
 
