@@ -11,6 +11,7 @@ import Ciclo from "@/components/dashboard/ciclos"
 export default async function Page({searchParams}) {
 
   const data = await getData(`${api_url}/estudantes/?`, searchParams);
+  const ciclos = await getData(`${api_url}/ciclos/`, {})
 
   return <>
     <h1>Pé-de-meia</h1>
@@ -20,7 +21,7 @@ export default async function Page({searchParams}) {
           <EntidadesSelect entidades={data['entidades']}/>}
     </section>
 
-    <section className={'flex flex-row space-x-20 mt-10'}>
+    <section className={'flex flex-row space-x-10 mt-10'}>
       <div className={'basis-1/8'}>
         <div className={'mb-5'}>
           <h2>Geral</h2>
@@ -43,6 +44,14 @@ export default async function Page({searchParams}) {
         </div>
 
         <DataTable columns={columns} data={data['results']}/>
+      </div>
+      <div className={'grow'}>
+        <div className={'mb-5'}>
+          <div className={'grid grid-cols-2'}>
+            <h2>Ciclos</h2>
+          </div>
+        </div>
+        <Ciclo data={ciclos}/>
       </div>
     </section>
 
