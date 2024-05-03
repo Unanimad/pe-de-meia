@@ -1,9 +1,16 @@
 asgiref==3.8.1
 certifi==2024.2.2
 Django==5.0.3
+django-cors-headers==4.3.1
 django-rest-framework==0.1.0
 djangorestframework==3.15.1
+numpy==1.26.4
+pandas==2.2.1
+psycopg2-binary==2.9.9
+python-dateutil==2.9.0.post0
+pytz==2024.1
 sentry-sdk==1.44.0
+six==1.16.0
 sqlparse==0.4.4
+tzdata==2024.1
 urllib3==2.2.1
-django-cors-headers
